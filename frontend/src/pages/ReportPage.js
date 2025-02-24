@@ -14,7 +14,7 @@ const ReportPage = () => {
           `${process.env.REACT_APP_API_URL}/analysis`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          },
+          }
         );
         // data is an array of analyses, sorted by createdAt desc in our controller
         if (data.length > 0) setAnalysis(data[0]);
@@ -29,7 +29,7 @@ const ReportPage = () => {
           `${process.env.REACT_APP_API_URL}/users/profile`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          },
+          }
         );
         setProfile(response.data);
       } catch (error) {
@@ -42,14 +42,16 @@ const ReportPage = () => {
   }, [token]);
 
   const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "Invalid date"; // or return an empty string, or handle as needed
+    }
     const options = {
       year: "numeric",
       month: "long",
       day: "numeric",
     };
-    return new Intl.DateTimeFormat("en-US", options).format(
-      new Date(dateString),
-    );
+    return new Intl.DateTimeFormat("en-US", options).format(date);
   };
 
   if (!analysis) {
